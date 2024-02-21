@@ -26,13 +26,13 @@ export default function Form({ handleClick }) {
     e.preventDefault();
     mutation.mutate(inputs);
   }
-
+  // min-w-[100%] w-[100vw] min-h-[100%] h-[100vh]
   return (
     <div
       onClick={(e) => {
         handleClick(e);
       }}
-      className="absolute top-0 left-0 min-w-[100%] w-[100vw] min-h-[100%] h-[100vh] bg-transparent-grey flex flex-col justify-center items-center"
+      className="absolute top-0 left-0 w-[100vw] h-[100vh] md:min-w-[100%] md:min-h-[100%] bg-transparent-grey flex flex-col justify-center items-center"
     >
       <form
         onSubmit={handleSubmit}
