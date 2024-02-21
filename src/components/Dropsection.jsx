@@ -1,45 +1,11 @@
 import { useState } from "react";
 import DraggedItem from "./DraggedItem";
-import axios from "axios";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-
-function getServerData(url, qKey) {
-  return useQuery({
-    queryKey: [qKey],
-    queryFn: () => {
-      return axios.get(url);
-    },
-  });
-}
-
-function deletePrevNote(getUrl, qKey, qClient) {
-  return useMutation({
-    mutationFn: (noteId) => {
-      return axios.delete(getUrl + "/" + noteId);
-    },
-    onSuccess: () => {
-      console.log("deleted successful");
-      qClient.invalidateQueries({
-        queryKey: [qKey],
-      });
-    },
-  });
-}
-
-function postServerData(url, qKey, qClient) {
-  return useMutation({
-    queryKey: [qKey],
-    mutationFn: (todo) => {
-      return axios.post(url, todo);
-    },
-    onSuccess: () => {
-      console.log("Note added successful");
-      qClient.invalidateQueries({
-        queryKey: [qKey],
-      });
-    },
-  });
-}
+import { useQueryClient } from "@tanstack/react-query";
+import {
+  getServerData,
+  deleteNote,
+  postServerData,
+} from "./react-query-logic.js";
 
 export default function DropSection({
   getSecNotes,
@@ -57,7 +23,7 @@ export default function DropSection({
   );
 
   const queryClient = useQueryClient();
-  const deletePrevSecNote = deletePrevNote(
+  const deletePrevSecNote = deleteNote(
     prevUrl.url,
     prevUrl.key,
     queryClient

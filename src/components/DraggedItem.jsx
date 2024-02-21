@@ -1,7 +1,7 @@
 import avatar from "../assets/avatar.png";
 import deleteIcon from "../assets/delete-icon.svg";
-import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteNote } from "./react-query-logic.js";
 
 export default function DraggedItem({
   qKey,
@@ -13,17 +13,7 @@ export default function DraggedItem({
   workTypeColor,
 }) {
   const queryClient = useQueryClient();
-  const mutation = useMutation({
-    mutationFn: (noteId) => {
-      return axios.delete(getUrl + "/" + noteId);
-    },
-    onSuccess: () => { 
-      console.log("deleted successful");
-      queryClient.invalidateQueries({
-        queryKey: [qKey],
-      });
-    },
-  });
+  const mutation = deleteNote(getUrl, qKey, queryClient);
 
   function handleDragStart(e) {
     e.dataTransfer.setData(
